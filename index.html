@@ -3,900 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10 Gier dla 2 Osób</title>
+    <title>Kalkulator Stacków Minecraft</title>
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #fff;
-            min-height: 100vh;
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+            line-height: 1.6;
             padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .score-board {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            gap: 30px;
-        }
-        
-        .player {
-            padding: 15px 40px;
-            border-radius: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: transform 0.3s;
+            min-height: 100vh;
         }
         
-        .player:hover {
-            transform: translateY(-5px);
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #16213e;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
         }
         
-        .player-red {
-            background: linear-gradient(to right, #ff416c, #ff4b2b);
-        }
-        
-        .player-blue {
-            background: linear-gradient(to right, #4b6cb7, #182848);
-        }
-        
-        .score {
-            font-size: 36px;
-            margin-top: 5px;
-        }
-        
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .game-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
+        h1 {
             text-align: center;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-            cursor: pointer;
-            border: 2px solid transparent;
+            color: #4ecca3;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
         }
         
-        .game-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+        .description {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #a9a9a9;
         }
         
-        .game-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-        }
-        
-        .game-title {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-        
-        .game-description {
-            font-size: 14px;
-            color: #ddd;
-            margin-bottom: 15px;
-        }
-        
-        .game-controls {
-            font-size: 12px;
-            color: #ccc;
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 8px;
+        .calculator-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #0f3460;
             border-radius: 8px;
         }
         
-        .game-container {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            display: none;
+        h2 {
+            color: #4ecca3;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
         }
         
-        .active {
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
             display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
         }
         
-        .game-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #4ecca3;
+            border-radius: 4px;
+            background-color: #1a1a2e;
+            color: #e6e6e6;
+            font-size: 1rem;
         }
         
-        .back-button {
-            background: linear-gradient(to right, #ff416c, #ff4b2b);
-            color: white;
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4ecca3;
+            color: #1a1a2e;
             border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1.1rem;
             font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s;
-        }
-        
-        .back-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-        }
-        
-        .start-button {
-            background: linear-gradient(to right, #4b6cb7, #182848);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s;
+            transition: background-color 0.3s;
+            margin-top: 10px;
         }
         
-        .start-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        button:hover {
+            background-color: #3da58a;
         }
         
-        .game-canvas {
-            background: #000;
-            display: block;
-            margin: 0 auto;
-            border-radius: 10px;
-            border: 2px solid #444;
-        }
-        
-        .instructions {
-            text-align: center;
-            margin: 20px 0;
+        .result {
+            margin-top: 20px;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        
-        footer {
+            background-color: #1a1a2e;
+            border-radius: 5px;
             text-align: center;
-            margin-top: 30px;
-            color: #ddd;
-            font-size: 14px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 15px;
+            font-size: 1.2rem;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
-        @media (max-width: 768px) {
-            .games-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .score-board {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-            
-            .player {
-                width: 100%;
-                max-width: 300px;
+        .stack-size-info {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #a9a9a9;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #a9a9a9;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>10 Gier dla 2 Osób</h1>
-            <p>Wybierz grę i rywalizuj ze znajomym na jednej klawiaturze!</p>
-        </header>
+        <h1>Kalkulator Stacków Minecraft</h1>
+        <p class="description">Przeliczaj ilości bloków na stacki i odwrotnie</p>
         
-        <div class="score-board">
-            <div class="player player-blue">
-                <div>NIEBIESKI</div>
-                <div class="score" id="score-blue">0</div>
+        <div class="calculator-section">
+            <h2>Przelicz z bloków na stacki</h2>
+            <div class="input-group">
+                <label for="blocks">Ilość bloków/itemów:</label>
+                <input type="number" id="blocks" min="0" placeholder="Wprowadź ilość">
             </div>
-            <div class="player player-red">
-                <div>CZERWONY</div>
-                <div class="score" id="score-red">0</div>
+            <div class="input-group">
+                <label for="stackSize">Rozmiar stacka:</label>
+                <select id="stackSize">
+                    <option value="128">128 (np. śnieżki)</option>
+                    <option value="64" selected>64 (większość bloków)</option>
+                    <option value="32">32 (np. śnieżki w Bedrock Edition)</option>
+                    <option value="16">16 (np. ender perły, łzy ghasta)</option>
+                    <option value="8">8 (np. dynie)</option>
+                </select>
+            </div>
+            <button id="calculateStacks">Przelicz na stacki</button>
+            <div class="result" id="stackResult">
+                Wynik pojawi się tutaj
+            </div>
+            <p class="stack-size-info">Standardowy rozmiar stacka w Minecraft to 64</p>
+        </div>
+        
+        <div class="calculator-section">
+            <h2>Przelicz ze stacków na bloki</h2>
+            <div class="input-group">
+                <label for="stacks">Ilość stacków:</label>
+                <input type="number" id="stacks" min="0" step="any" placeholder="Wprowadź ilość stacków">
+            </div>
+            <div class="input-group">
+                <label for="stackSizeReverse">Rozmiar stacka:</label>
+                <select id="stackSizeReverse">
+                    <option value="128">128 (np. śnieżki)</option>
+                    <option value="64" selected>64 (większość bloków)</option>
+                    <option value="32">32 (np. śnieżki w Bedrock Edition)</option>
+                    <option value="16">16 (np. ender perły, łzy ghasta)</option>
+                    <option value="8">8 (np. dynie)</option>
+                </select>
+            </div>
+            <button id="calculateBlocks">Przelicz na bloki</button>
+            <div class="result" id="blockResult">
+                Wynik pojawi się tutaj
             </div>
         </div>
         
-        <div class="games-grid" id="games-list">
-            <!-- Gra 1 -->
-            <div class="game-card" data-game="1">
-                <div class="game-icon">🏎️</div>
-                <h3 class="game-title">Wyścig Samochodów</h3>
-                <p class="game-description">Omijaj przeszkody i dotrzyj pierwszy do mety!</p>
-                <p class="game-controls">Niebieski: Strzałki | Czerwony: WASD</p>
-            </div>
-            
-            <!-- Gra 2 -->
-            <div class="game-card" data-game="2">
-                <div class="game-icon">🎾</div>
-                <h3 class="game-title">Pong</h3>
-                <p class="game-description">Klasyczna gra w odbijanie piłeczki.</p>
-                <p class="game-controls">Niebieski: W/S | Czerwony: Strzałka Góra/Dół</p>
-            </div>
-            
-            <!-- Gra 3 -->
-            <div class="game-card" data-game="3">
-                <div class="game-icon">🚀</div>
-                <h3 class="game-title">Kosmiczna Bitwa</h3>
-                <p class="game-description">Zestrzel statek przeciwnika!</p>
-                <p class="game-controls">Niebieski: Strzałki + Spacja | Czerwony: WASD + F</p>
-            </div>
-            
-            <!-- Gra 4 -->
-            <div class="game-card" data-game="4">
-                <div class="game-icon">🐍</div>
-                <h3 class="game-title">Snake</h3>
-                <p class="game-description">Dwie węże, jeden wygrywa!</p>
-                <p class="game-controls">Niebieski: Strzałki | Czerwony: WASD</p>
-            </div>
-            
-            <!-- Gra 5 -->
-            <div class="game-card" data-game="5">
-                <div class="game-icon">⚽</div>
-                <h3 class="game-title">Piłkarzyki</h3>
-                <p class="game-description">Strzel bramkę przeciwnikowi!</p>
-                <p class="game-controls">Niebieski: W/S | Czerwony: Strzałka Góra/Dół</p>
-            </div>
-            
-            <!-- Gra 6 -->
-            <div class="game-card" data-game="6">
-                <div class="game-icon">🧩</div>
-                <h3 class="game-title">Wyścig Kapsli</h3>
-                <p class="game-description">Steruj kapslem i wygraj wyścig!</p>
-                <p class="game-controls">Niebieski: A/D | Czerwony: Strzałka Lewo/Prawo</p>
-            </div>
-            
-            <!-- Gra 7 -->
-            <div class="game-card" data-game="7">
-                <div class="game-icon">⚔️</div>
-                <h3 class="game-title">Walka na Miecze</h3>
-                <p class="game-description">Wykorzystaj zręczność, by pokonać przeciwnika!</p>
-                <p class="game-controls">Niebieski: Spacja | Czerwony: Enter</p>
-            </div>
-            
-            <!-- Gra 8 -->
-            <div class="game-card" data-game="8">
-                <div class="game-icon">🧊</div>
-                <h3 class="game-title">Arkanoid</h3>
-                <p class="game-description">Dwuosobowa wersja klasycznej gry.</p>
-                <p class="game-controls">Niebieski: A/D | Czerwony: Strzałka Lewo/Prawo</p>
-            </div>
-            
-            <!-- Gra 9 -->
-            <div class="game-card" data-game="9">
-                <div class="game-icon">🎯</div>
-                <h3 class="game-title">Strzelanie do Celi</h3>
-                <p class="game-description">Traf w więcej celów niż przeciwnik!</p>
-                <p class="game-controls">Niebieski: Strzałki + Spacja | Czerwony: WASD + F</p>
-            </div>
-            
-            <!-- Gra 10 -->
-            <div class="game-card" data-game="10">
-                <div class="game-icon">🕹️</div>
-                <h3 class="game-title">Asteroidy</h3>
-                <p class="game-description">Zniszcz więcej asteroid niż przeciwnik!</p>
-                <p class="game-controls">Niebieski: Strzałki + Spacja | Czerwony: WASD + F</p>
-            </div>
+        <div class="footer">
+            <p>Kalkulator stacków Minecraft &copy; 2023</p>
         </div>
-        
-        <!-- Kontenery gier (początkowo ukryte) -->
-        <div class="game-container" id="game-1">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Wyścig Samochodów</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: Strzałki (lewo, prawo) | Czerwony: A, D - Omijaj przeszkody i dotrzyj pierwszy do mety!</p>
-            </div>
-            <canvas class="game-canvas" id="race-game" width="800" height="400"></canvas>
-        </div>
-        
-        <div class="game-container" id="game-2">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Pong</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: W, S | Czerwony: Strzałka Góra, Dół - Odbijaj piłeczkę i zdobywaj punkty!</p>
-            </div>
-            <canvas class="game-canvas" id="pong-game" width="800" height="400"></canvas>
-        </div>
-        
-        <!-- Kontenery dla pozostałych gier -->
-        <div class="game-container" id="game-3">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Kosmiczna Bitwa</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: Strzałki (ruch) + Spacja (strzał) | Czerwony: WASD (ruch) + F (strzał) - Zestrzel statek przeciwnika!</p>
-            </div>
-            <canvas class="game-canvas" id="space-game" width="800" height="500"></canvas>
-        </div>
-        
-        <div class="game-container" id="game-4">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Snake</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: Strzałki | Czerwony: WASD - Zbieraj jedzenie i rosnąj, unikaj kolizji!</p>
-            </div>
-            <canvas class="game-canvas" id="snake-game" width="600" height="600"></canvas>
-        </div>
-        
-        <div class="game-container" id="game-5">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Piłkarzyki</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: W, S | Czerwony: Strzałka Góra, Dół - Strzel bramkę przeciwnikowi!</p>
-            </div>
-            <canvas class="game-canvas" id="foosball-game" width="800" height="400"></canvas>
-        </div>
-        
-        <div class="game-container" id="game-6">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Wyścig Kapsli</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: A, D | Czerwony: Strzałka Lewo, Prawo - Wygraj wyścig do mety!</p>
-            </div>
-            <canvas class="game-canvas" id="capsule-game" width="800" height="400"></canvas>
-        </div>
-        
-        <div class="game-container" id="game-7">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Walka na Miecze</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: Spacja | Czerwony: Enter - Wykonaj więcej trafień niż przeciwnik!</p>
-            </div>
-            <canvas class="game-canvas" id="sword-game" width="800" height="400"></canvas>
-        </div>
-        
-        <div class="game-container" id="game-8">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Arkanoid</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: A, D | Czerwony: Strzałka Lewo, Prawo - Zbij więcej klocków niż przeciwnik!</p>
-            </div>
-            <canvas class="game-canvas" id="arkanoid-game" width="800" height="500"></canvas>
-        </div>
-        
-        <div class="game-container" id="game-9">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Strzelanie do Celi</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: Strzałki + Spacja | Czerwony: WASD + F - Traf w więcej celów niż przeciwnik!</p>
-            </div>
-            <canvas class="game-canvas" id="target-game" width="800" height="500"></canvas>
-        </div>
-        
-        <div class="game-container" id="game-10">
-            <div class="game-header">
-                <button class="back-button">Powrót do menu</button>
-                <h2>Asteroidy</h2>
-                <button class="start-button">Start</button>
-            </div>
-            <div class="instructions">
-                <p>Niebieski: Strzałki + Spacja | Czerwony: WASD + F - Zniszcz więcej asteroid niż przeciwnik!</p>
-            </div>
-            <canvas class="game-canvas" id="asteroid-game" width="800" height="500"></canvas>
-        </div>
-        
-        <footer>
-            <p>Strona stworzona do gry dla dwóch osób na jednej klawiaturze. Miłej zabawy!</p>
-        </footer>
     </div>
 
     <script>
-        // Zmienne przechowujące wyniki
-        let scoreBlue = 0;
-        let scoreRed = 0;
-        
-        // Elementy DOM
-        const scoreBlueElement = document.getElementById('score-blue');
-        const scoreRedElement = document.getElementById('score-red');
-        const gamesList = document.getElementById('games-list');
-        const gameContainers = document.querySelectorAll('.game-container');
-        const backButtons = document.querySelectorAll('.back-button');
-        const startButtons = document.querySelectorAll('.start-button');
-        
-        // Aktualizacja wyników
-        function updateScores() {
-            scoreBlueElement.textContent = scoreBlue;
-            scoreRedElement.textContent = scoreRed;
-            // Zapisz wyniki w localStorage
-            localStorage.setItem('playerScores', JSON.stringify({blue: scoreBlue, red: scoreRed}));
-        }
-        
-        // Wczytaj zapisane wyniki
-        function loadScores() {
-            const savedScores = localStorage.getItem('playerScores');
-            if (savedScores) {
-                const scores = JSON.parse(savedScores);
-                scoreBlue = scores.blue;
-                scoreRed = scores.red;
-                updateScores();
-            }
-        }
-        
-        // Obsługa kliknięcia w kartę gry
-        gamesList.querySelectorAll('.game-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const gameId = card.getAttribute('data-game');
-                showGame(gameId);
-            });
-        });
-        
-        // Pokazanie wybranej gry
-        function showGame(gameId) {
-            // Ukryj listę gier
-            gamesList.style.display = 'none';
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementy DOM
+            const blocksInput = document.getElementById('blocks');
+            const stackSizeSelect = document.getElementById('stackSize');
+            const calculateStacksBtn = document.getElementById('calculateStacks');
+            const stackResult = document.getElementById('stackResult');
             
-            // Pokaż wybraną grę
-            document.getElementById(`game-${gameId}`).classList.add('active');
-        }
-        
-        // Powrót do menu głównego
-        backButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Ukryj wszystkie gry
-                gameContainers.forEach(container => {
-                    container.classList.remove('active');
-                    // Zatrzymaj wszystkie gry
-                    const gameId = container.id.split('-')[1];
-                    stopGame(gameId);
-                });
+            const stacksInput = document.getElementById('stacks');
+            const stackSizeReverseSelect = document.getElementById('stackSizeReverse');
+            const calculateBlocksBtn = document.getElementById('calculateBlocks');
+            const blockResult = document.getElementById('blockResult');
+            
+            // Funkcja przeliczająca bloki na stacki
+            function calculateStacks() {
+                const blocks = parseInt(blocksInput.value);
+                const stackSize = parseInt(stackSizeSelect.value);
                 
-                // Pokaż listę gier
-                gamesList.style.display = 'grid';
-            });
-        });
-        
-        // Start gry po kliknięciu przycisku
-        startButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const gameContainer = button.closest('.game-container');
-                const gameId = gameContainer.id.split('-')[1];
-                startGame(gameId);
-            });
-        });
-        
-        // Funkcja zatrzymująca grę
-        function stopGame(gameId) {
-            // Tutaj można dodać kod do zatrzymania poszczególnych gier
-            // Na potrzeby tego przykładu, po prostu przestaniemy wywoływać requestAnimationFrame
-        }
-        
-        // Funkcja startująca grę
-        function startGame(gameId) {
-            switch(gameId) {
-                case '1':
-                    startRaceGame();
-                    break;
-                case '2':
-                    startPongGame();
-                    break;
-                case '3':
-                    startSpaceGame();
-                    break;
-                case '4':
-                    startSnakeGame();
-                    break;
-                case '5':
-                    startFoosballGame();
-                    break;
-                case '6':
-                    startCapsuleGame();
-                    break;
-                case '7':
-                    startSwordGame();
-                    break;
-                case '8':
-                    startArkanoidGame();
-                    break;
-                case '9':
-                    startTargetGame();
-                    break;
-                case '10':
-                    startAsteroidGame();
-                    break;
-            }
-        }
-        
-        // Implementacje gier
-        function startRaceGame() {
-            const canvas = document.getElementById('race-game');
-            const ctx = canvas.getContext('2d');
-            
-            // Ustawienia gry
-            const roadWidth = canvas.width;
-            const roadHeight = canvas.height;
-            const playerWidth = 40;
-            const playerHeight = 60;
-            const obstacleWidth = 50;
-            const obstacleHeight = 50;
-            
-            // Pozycje graczy
-            let blueCarX = roadWidth / 4 - playerWidth / 2;
-            let blueCarY = roadHeight - playerHeight - 10;
-            let redCarX = 3 * roadWidth / 4 - playerWidth / 2;
-            let redCarY = roadHeight - playerHeight - 10;
-            
-            // Prędkości
-            let blueSpeed = 0;
-            let redSpeed = 0;
-            
-            // Przeszkody
-            let obstacles = [];
-            let obstacleSpeed = 3;
-            let obstacleFrequency = 100; // co ile klatek nowa przeszkoda
-            
-            // Meta
-            const finishLine = 50;
-            let raceStarted = false;
-            let winner = null;
-            
-            // Sterowanie
-            const keys = {};
-            
-            document.addEventListener('keydown', (e) => {
-                keys[e.key] = true;
-                
-                if (raceStarted) {
-                    // Niebieski gracz (strzałki)
-                    if (e.key === 'ArrowLeft') blueSpeed = -5;
-                    if (e.key === 'ArrowRight') blueSpeed = 5;
-                    
-                    // Czerwony gracz (A/D)
-                    if (e.key === 'a') redSpeed = -5;
-                    if (e.key === 'd') redSpeed = 5;
-                }
-            });
-            
-            document.addEventListener('keyup', (e) => {
-                keys[e.key] = false;
-                
-                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') blueSpeed = 0;
-                if (e.key === 'a' || e.key === 'd') redSpeed = 0;
-            });
-            
-            // Funkcja resetująca grę
-            function resetGame() {
-                blueCarX = roadWidth / 4 - playerWidth / 2;
-                blueCarY = roadHeight - playerHeight - 10;
-                redCarX = 3 * roadWidth / 4 - playerWidth / 2;
-                redCarY = roadHeight - playerHeight - 10;
-                obstacles = [];
-                obstacleSpeed = 3;
-                raceStarted = true;
-                winner = null;
-            }
-            
-            // Funkcja rysująca grę
-            function draw() {
-                // Czyszczenie canvasa
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Rysowanie drogi
-                ctx.fillStyle = '#333';
-                ctx.fillRect(0, 0, roadWidth, roadHeight);
-                
-                // Rysowanie linii na drodze
-                ctx.fillStyle = '#fff';
-                for (let i = 0; i < roadHeight; i += 40) {
-                    ctx.fillRect(roadWidth / 2 - 5, i, 10, 20);
-                }
-                
-                // Rysowanie mety
-                ctx.fillStyle = '#ffcc00';
-                for (let i = 0; i < roadHeight; i += 20) {
-                    ctx.fillRect(0, i, 10, 10);
-                    ctx.fillRect(roadWidth - 10, i, 10, 10);
-                }
-                
-                // Rysowanie graczy
-                ctx.fillStyle = '#4e8cff'; // Niebieski
-                ctx.fillRect(blueCarX, blueCarY, playerWidth, playerHeight);
-                
-                ctx.fillStyle = '#ff6b6b'; // Czerwony
-                ctx.fillRect(redCarX, redCarY, playerWidth, playerHeight);
-                
-                // Rysowanie przeszkód
-                ctx.fillStyle = '#e74c3c';
-                obstacles.forEach(obstacle => {
-                    ctx.fillRect(obstacle.x, obstacle.y, obstacleWidth, obstacleHeight);
-                });
-                
-                // Rysowanie instrukcji lub komunikatu o zwycięstwie
-                if (!raceStarted) {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    ctx.fillStyle = '#fff';
-                    ctx.font = '30px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('Naciśnij SPACJĘ aby rozpocząć', canvas.width / 2, canvas.height / 2);
-                }
-                
-                if (winner) {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    ctx.fillStyle = winner === 'blue' ? '#4e8cff' : '#ff6b6b';
-                    ctx.font = '40px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(`Wygrał gracz ${winner === 'blue' ? 'NIEBIESKI' : 'CZERWONY'}!`, canvas.width / 2, canvas.height / 2);
-                    
-                    ctx.fillStyle = '#fff';
-                    ctx.font = '20px Arial';
-                    ctx.fillText('Naciśnij R aby zagrać ponownie', canvas.width / 2, canvas.height / 2 + 50);
-                }
-            }
-            
-            function update() {
-                if (!raceStarted) {
-                    if (keys[' ']) {
-                        resetGame();
-                    }
+                if (isNaN(blocks) || blocks < 0) {
+                    stackResult.innerHTML = '<span style="color: #ff6b6b;">Wprowadź poprawną liczbę bloków</span>';
                     return;
                 }
                 
-                if (winner) {
-                    if (keys['r']) {
-                        resetGame();
-                    }
+                const fullStacks = Math.floor(blocks / stackSize);
+                const remainder = blocks % stackSize;
+                
+                if (fullStacks === 0 && remainder === 0) {
+                    stackResult.textContent = '0 stacków';
+                } else if (fullStacks === 0) {
+                    stackResult.textContent = `${remainder} bloków (mniej niż 1 stack)`;
+                } else if (remainder === 0) {
+                    stackResult.textContent = `${fullStacks} pełnych stacków`;
+                } else {
+                    stackResult.textContent = `${fullStacks} stacków i ${remainder} bloków`;
+                }
+            }
+            
+            // Funkcja przeliczająca stacki na bloki
+            function calculateBlocks() {
+                const stacks = parseFloat(stacksInput.value);
+                const stackSize = parseInt(stackSizeReverseSelect.value);
+                
+                if (isNaN(stacks) || stacks < 0) {
+                    blockResult.innerHTML = '<span style="color: #ff6b6b;">Wprowadź poprawną liczbę stacków</span>';
                     return;
                 }
                 
-                // Poruszanie niebieskim samochodem
-                blueCarX += blueSpeed;
-                if (blueCarX < 0) blueCarX = 0;
-                if (blueCarX > roadWidth / 2 - playerWidth) blueCarX = roadWidth / 2 - playerWidth;
-                
-                // Poruszanie czerwonym samochodem
-                redCarX += redSpeed;
-                if (redCarX < roadWidth / 2) redCarX = roadWidth / 2;
-                if (redCarX > roadWidth - playerWidth) redCarX = roadWidth - playerWidth;
-                
-                // Poruszanie przeszkodami
-                for (let i = 0; i < obstacles.length; i++) {
-                    obstacles[i].y += obstacleSpeed;
-                    
-                    // Usuwanie przeszkód poza ekranem
-                    if (obstacles[i].y > canvas.height) {
-                        obstacles.splice(i, 1);
-                        i--;
-                    }
-                }
-                
-                // Dodawanie nowych przeszkód
-                if (Math.random() < 0.02) {
-                    const lane = Math.random() > 0.5 ? 1 : 2; // 1 - lewa strona, 2 - prawa strona
-                    obstacles.push({
-                        x: lane === 1 ? roadWidth / 4 - obstacleWidth / 2 : 3 * roadWidth / 4 - obstacleWidth / 2,
-                        y: -obstacleHeight
-                    });
-                }
-                
-                // Sprawdzanie kolizji z przeszkodami
-                for (let obstacle of obstacles) {
-                    // Kolizja niebieskiego
-                    if (blueCarX < obstacle.x + obstacleWidth &&
-                        blueCarX + playerWidth > obstacle.x &&
-                        blueCarY < obstacle.y + obstacleHeight &&
-                        blueCarY + playerHeight > obstacle.y) {
-                        blueCarY = roadHeight - playerHeight - 10; // Reset pozycji
-                    }
-                    
-                    // Kolizja czerwonego
-                    if (redCarX < obstacle.x + obstacleWidth &&
-                        redCarX + playerWidth > obstacle.x &&
-                        redCarY < obstacle.y + obstacleHeight &&
-                        redCarY + playerHeight > obstacle.y) {
-                        redCarY = roadHeight - playerHeight - 10; // Reset pozycji
-                    }
-                }
-                
-                // Sprawdzanie czy ktoś wygrał
-                if (blueCarY <= finishLine) {
-                    winner = 'blue';
-                    scoreBlue++;
-                    updateScores();
-                }
-                
-                if (redCarY <= finishLine) {
-                    winner = 'red';
-                    scoreRed++;
-                    updateScores();
-                }
-                
-                // Poruszanie samochodami do przodu (auto-scroll)
-                blueCarY -= 2;
-                redCarY -= 2;
+                const totalBlocks = Math.floor(stacks * stackSize);
+                blockResult.textContent = `${totalBlocks} bloków`;
             }
             
-            function gameLoop() {
-                update();
-                draw();
-                requestAnimationFrame(gameLoop);
-            }
+            // Nasłuchiwanie zdarzeń
+            calculateStacksBtn.addEventListener('click', calculateStacks);
+            calculateBlocksBtn.addEventListener('click', calculateBlocks);
             
-            gameLoop();
-        }
-        
-        function startPongGame() {
-            const canvas = document.getElementById('pong-game');
-            const ctx = canvas.getContext('2d');
-            
-            // Ustawienia gry
-            const paddleWidth = 10;
-            const paddleHeight = 80;
-            const ballSize = 10;
-            const paddleSpeed = 8;
-            
-            // Pozycje graczy i piłki
-            let bluePaddleY = canvas.height / 2 - paddleHeight / 2;
-            let redPaddleY = canvas.height / 2 - paddleHeight / 2;
-            let ballX = canvas.width / 2;
-            let ballY = canvas.height / 2;
-            let ballSpeedX = 5;
-            let ballSpeedY = 3;
-            
-            // Wynik
-            let blueScore = 0;
-            let redScore = 0;
-            let gameRunning = false;
-            
-            // Sterowanie
-            const keys = {};
-            
-            document.addEventListener('keydown', (e) => {
-                keys[e.key] = true;
-                
-                if (!gameRunning && e.key === ' ') {
-                    gameRunning = true;
+            // Możliwość użycia klawisza Enter
+            blocksInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    calculateStacks();
                 }
             });
             
-            document.addEventListener('keyup', (e) => {
-                keys[e.key] = false;
-            });
-            
-            // Funkcja resetująca piłkę
-            function resetBall() {
-                ballX = canvas.width / 2;
-                ballY = canvas.height / 2;
-                ballSpeedX = -ballSpeedX;
-                ballSpeedY = Math.random() * 6 - 3;
-            }
-            
-            // Funkcja rysująca grę
-            function draw() {
-                // Czyszczenie canvasa
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Rysowanie tła
-                ctx.fillStyle = '#000';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Rysowanie linii środkowej
-                ctx.beginPath();
-                ctx.setLineDash([5, 5]);
-                ctx.moveTo(canvas.width / 2, 0);
-                ctx.lineTo(canvas.width / 2, canvas.height);
-                ctx.strokeStyle = '#444';
-                ctx.stroke();
-                ctx.setLineDash([]);
-                
-                // Rysowanie paletek
-                ctx.fillStyle = '#4e8cff'; // Niebieski
-                ctx.fillRect(10, bluePaddleY, paddleWidth, paddleHeight);
-                
-                ctx.fillStyle = '#ff6b6b'; // Czerwony
-                ctx.fillRect(canvas.width - 20, redPaddleY, paddleWidth, paddleHeight);
-                
-                // Rysowanie piłki
-                ctx.beginPath();
-                ctx.arc(ballX, ballY, ballSize, 0, Math.PI * 2);
-                ctx.fillStyle = '#fff';
-                ctx.fill();
-                ctx.closePath();
-                
-                // Rysowanie wyniku
-                ctx.font = '30px Arial';
-                ctx.fillStyle = '#4e8cff';
-                ctx.fillText(blueScore, canvas.width / 4, 40);
-                ctx.fillStyle = '#ff6b6b';
-                ctx.fillText(redScore, 3 * canvas.width / 4, 40);
-                
-                // Komunikat startowy
-                if (!gameRunning) {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    ctx.fillStyle = '#fff';
-                    ctx.font = '30px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('Naciśnij SPACJĘ aby rozpocząć', canvas.width / 2, canvas.height / 2);
+            stacksInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    calculateBlocks();
                 }
-            }
-            
-            function update() {
-                if (!gameRunning) return;
-                
-                // Poruszanie niebieską paletką (strzałki)
-                if (keys['ArrowUp'] && bluePaddleY > 0) bluePaddleY -= paddleSpeed;
-                if (keys['ArrowDown'] && bluePaddleY < canvas.height - paddleHeight) bluePaddleY += paddleSpeed;
-                
-                // Poruszanie czerwoną paletką (W/S)
-                if (keys['w'] && redPaddleY > 0) redPaddleY -= paddleSpeed;
-                if (keys['s'] && redPaddleY < canvas.height - paddleHeight) redPaddleY += paddleSpeed;
-                
-               
+            });
+        });
+    </script>
+</body>
+</html>
