@@ -3,8 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Stacków Minecraft</title>
+    <title>Zaawansowany Kalkulator Minecraft</title>
     <style>
+        :root {
+            --primary: #4ecca3;
+            --primary-dark: #3da58a;
+            --secondary: #0f3460;
+            --dark: #16213e;
+            --darker: #1a1a2e;
+            --light: #e6e6e6;
+            --gray: #a9a9a9;
+            --error: #ff6b6b;
+        }
+        
         * {
             box-sizing: border-box;
             margin: 0;
@@ -13,8 +24,8 @@
         }
         
         body {
-            background-color: #1a1a2e;
-            color: #e6e6e6;
+            background-color: var(--darker);
+            color: var(--light);
             line-height: 1.6;
             padding: 20px;
             display: flex;
@@ -24,9 +35,9 @@
         }
         
         .container {
-            max-width: 600px;
+            max-width: 800px;
             width: 100%;
-            background-color: #16213e;
+            background-color: var(--dark);
             border-radius: 10px;
             padding: 30px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
@@ -35,28 +46,35 @@
         
         h1 {
             text-align: center;
-            color: #4ecca3;
-            margin-bottom: 20px;
+            color: var(--primary);
+            margin-bottom: 10px;
             font-size: 2.2rem;
         }
         
-        .description {
+        .subtitle {
             text-align: center;
+            color: var(--gray);
             margin-bottom: 30px;
-            color: #a9a9a9;
+            font-size: 1.1rem;
         }
         
         .calculator-section {
             margin-bottom: 30px;
             padding: 20px;
-            background-color: #0f3460;
+            background-color: var(--secondary);
             border-radius: 8px;
         }
         
         h2 {
-            color: #4ecca3;
+            color: var(--primary);
             margin-bottom: 15px;
             font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 10px;
         }
         
         .input-group {
@@ -72,18 +90,40 @@
         input, select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #4ecca3;
+            border: 1px solid var(--primary);
             border-radius: 4px;
-            background-color: #1a1a2e;
-            color: #e6e6e6;
+            background-color: var(--darker);
+            color: var(--light);
             font-size: 1rem;
+        }
+        
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .quick-btn {
+            padding: 6px 12px;
+            background-color: var(--darker);
+            color: var(--light);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quick-btn:hover {
+            background-color: var(--primary);
+            color: var(--darker);
         }
         
         button {
             width: 100%;
             padding: 12px;
-            background-color: #4ecca3;
-            color: #1a1a2e;
+            background-color: var(--primary);
+            color: var(--darker);
             border: none;
             border-radius: 4px;
             font-size: 1.1rem;
@@ -94,13 +134,13 @@
         }
         
         button:hover {
-            background-color: #3da58a;
+            background-color: var(--primary-dark);
         }
         
         .result {
             margin-top: 20px;
             padding: 15px;
-            background-color: #1a1a2e;
+            background-color: var(--darker);
             border-radius: 5px;
             text-align: center;
             font-size: 1.2rem;
@@ -114,14 +154,68 @@
             text-align: center;
             margin-top: 10px;
             font-size: 0.9rem;
-            color: #a9a9a9;
+            color: var(--gray);
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .comparison-item {
+            background-color: var(--darker);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .history {
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            padding: 8px;
+            border-bottom: 1px solid var(--gray);
+            font-size: 0.9rem;
         }
         
         .footer {
             margin-top: 30px;
             text-align: center;
-            color: #a9a9a9;
+            color: var(--gray);
             font-size: 0.9rem;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--primary);
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .tab.active {
+            background-color: var(--secondary);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
         }
         
         @media (max-width: 600px) {
@@ -132,67 +226,175 @@
             h1 {
                 font-size: 1.8rem;
             }
+            
+            .comparison {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Kalkulator Stacków Minecraft</h1>
-        <p class="description">Przeliczaj ilości bloków na stacki i odwrotnie</p>
+        <h1>Zaawansowany Kalkulator Minecraft</h1>
+        <p class="subtitle">Przeliczaj stacki, skrzynie, surowce i więcej</p>
         
-        <div class="calculator-section">
-            <h2>Przelicz z bloków na stacki</h2>
-            <div class="input-group">
-                <label for="blocks">Ilość bloków/itemów:</label>
-                <input type="number" id="blocks" min="0" placeholder="Wprowadź ilość">
-            </div>
-            <div class="input-group">
-                <label for="stackSize">Rozmiar stacka:</label>
-                <select id="stackSize">
-                    <option value="128">128 (np. śnieżki)</option>
-                    <option value="64" selected>64 (większość bloków)</option>
-                    <option value="32">32 (np. śnieżki w Bedrock Edition)</option>
-                    <option value="16">16 (np. ender perły, łzy ghasta)</option>
-                    <option value="8">8 (np. dynie)</option>
-                </select>
-            </div>
-            <button id="calculateStacks">Przelicz na stacki</button>
-            <div class="result" id="stackResult">
-                Wynik pojawi się tutaj
-            </div>
-            <p class="stack-size-info">Standardowy rozmiar stacka w Minecraft to 64</p>
+        <div class="tabs">
+            <div class="tab active" data-tab="stacks">Stacki</div>
+            <div class="tab" data-tab="chests">Skrzynie</div>
+            <div class="tab" data-tab="materials">Surowce</div>
         </div>
         
-        <div class="calculator-section">
-            <h2>Przelicz ze stacków na bloki</h2>
-            <div class="input-group">
-                <label for="stacks">Ilość stacków:</label>
-                <input type="number" id="stacks" min="0" step="any" placeholder="Wprowadź ilość stacków">
+        <!-- Zakładka Stacki -->
+        <div class="tab-content active" id="stacks-tab">
+            <div class="calculator-section">
+                <h2>Przelicz z bloków na stacki</h2>
+                <div class="input-group">
+                    <label for="blocks">Ilość bloków/itemów:</label>
+                    <input type="number" id="blocks" min="0" placeholder="Wprowadź ilość">
+                    <div class="quick-buttons">
+                        <button class="quick-btn" data-value="64">64</button>
+                        <button class="quick-btn" data-value="128">128</button>
+                        <button class="quick-btn" data-value="256">256</button>
+                        <button class="quick-btn" data-value="512">512</button>
+                        <button class="quick-btn" data-value="1024">1024</button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="stackSize">Rozmiar stacka:</label>
+                    <select id="stackSize">
+                        <option value="128">128 (śnieżki)</option>
+                        <option value="64" selected>64 (większość bloków)</option>
+                        <option value="32">32 (śnieżki Bedrock)</option>
+                        <option value="16">16 (perły ender, łzy ghasta)</option>
+                        <option value="8">8 (dynie)</option>
+                    </select>
+                </div>
+                <button id="calculateStacks">Przelicz na stacki</button>
+                <div class="result" id="stackResult">
+                    Wynik pojawi się tutaj
+                </div>
+                
+                <div class="comparison">
+                    <div class="comparison-item">
+                        <div>Stacki 64:</div>
+                        <div id="compare64">-</div>
+                    </div>
+                    <div class="comparison-item">
+                        <div>Stacki 16:</div>
+                        <div id="compare16">-</div>
+                    </div>
+                    <div class="comparison-item">
+                        <div>Reszta:</div>
+                        <div id="remainder">-</div>
+                    </div>
+                </div>
             </div>
-            <div class="input-group">
-                <label for="stackSizeReverse">Rozmiar stacka:</label>
-                <select id="stackSizeReverse">
-                    <option value="128">128 (np. śnieżki)</option>
-                    <option value="64" selected>64 (większość bloków)</option>
-                    <option value="32">32 (np. śnieżki w Bedrock Edition)</option>
-                    <option value="16">16 (np. ender perły, łzy ghasta)</option>
-                    <option value="8">8 (np. dynie)</option>
-                </select>
+            
+            <div class="calculator-section">
+                <h2>Przelicz ze stacków na bloki</h2>
+                <div class="input-group">
+                    <label for="stacks">Ilość stacków:</label>
+                    <input type="number" id="stacks" min="0" step="any" placeholder="Wprowadź ilość stacków">
+                </div>
+                <div class="input-group">
+                    <label for="stackSizeReverse">Rozmiar stacka:</label>
+                    <select id="stackSizeReverse">
+                        <option value="128">128 (śnieżki)</option>
+                        <option value="64" selected>64 (większość bloków)</option>
+                        <option value="32">32 (śnieżki Bedrock)</option>
+                        <option value="16">16 (perły ender, łzy ghasta)</option>
+                        <option value="8">8 (dynie)</option>
+                    </select>
+                </div>
+                <button id="calculateBlocks">Przelicz na bloki</button>
+                <div class="result" id="blockResult">
+                    Wynik pojawi się tutaj
+                </div>
             </div>
-            <button id="calculateBlocks">Przelicz na bloki</button>
-            <div class="result" id="blockResult">
-                Wynik pojawi się tutaj
+            
+            <div class="calculator-section">
+                <h2>Historia obliczeń</h2>
+                <div class="history" id="calculationHistory">
+                    <!-- Historia będzie dodawana dynamicznie -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Zakładka Skrzynie -->
+        <div class="tab-content" id="chests-tab">
+            <div class="calculator-section">
+                <h2>Przelicz na skrzynie</h2>
+                <div class="input-group">
+                    <label for="chestItems">Ilość przedmiotów:</label>
+                    <input type="number" id="chestItems" min="0" placeholder="Wprowadź ilość">
+                </div>
+                <div class="input-group">
+                    <label for="chestType">Typ skrzyni:</label>
+                    <select id="chestType">
+                        <option value="27">Zwykła skrzynia (27 slotów)</option>
+                        <option value="54">Duża skrzynia (54 sloty)</option>
+                        <option value="5">Ender chest (27 slotów)</option>
+                    </select>
+                </div>
+                <button id="calculateChests">Przelicz na skrzynie</button>
+                <div class="result" id="chestResult">
+                    Wynik pojawi się tutaj
+                </div>
+            </div>
+        </div>
+        
+        <!-- Zakładka Surowce -->
+        <div class="tab-content" id="materials-tab">
+            <div class="calculator-section">
+                <h2>Kalkulator surowców</h2>
+                <div class="input-group">
+                    <label for="craftItem">Przedmiot do wytworzenia:</label>
+                    <select id="craftItem">
+                        <option value="block">Blok materiału (9 sztuk)</option>
+                        <option value="stairs">Schody (4 sztuki)</option>
+                        <option value="slab">Płyta (6 sztuk)</option>
+                        <option value="door">Drzwi (3 sztuki)</option>
+                        <option value="chest">Skrzynia (8 sztuk)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="craftAmount">Ilość do wytworzenia:</label>
+                    <input type="number" id="craftAmount" min="1" value="1" placeholder="Ilość">
+                </div>
+                <button id="calculateMaterials">Oblicz surowce</button>
+                <div class="result" id="materialResult">
+                    Wynik pojawi się tutaj
+                </div>
             </div>
         </div>
         
         <div class="footer">
-            <p>Kalkulator stacków Minecraft &copy; 2023</p>
+            <p>Zaawansowany kalkulator Minecraft &copy; 2023</p>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Elementy DOM
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Przełączanie zakładek
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Usuń aktywną klasę ze wszystkich zakładek
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(tc => tc.classList.remove('active'));
+                    
+                    // Dodaj aktywną klasę do klikniętej zakładki
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Kalkulator stacków - elementy
             const blocksInput = document.getElementById('blocks');
             const stackSizeSelect = document.getElementById('stackSize');
             const calculateStacksBtn = document.getElementById('calculateStacks');
@@ -203,28 +405,88 @@
             const calculateBlocksBtn = document.getElementById('calculateBlocks');
             const blockResult = document.getElementById('blockResult');
             
+            const compare64 = document.getElementById('compare64');
+            const compare16 = document.getElementById('compare16');
+            const remainder = document.getElementById('remainder');
+            
+            // Szybkie przyciski
+            const quickButtons = document.querySelectorAll('.quick-btn');
+            quickButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    blocksInput.value = button.getAttribute('data-value');
+                });
+            });
+            
+            // Historia obliczeń
+            const historyContainer = document.getElementById('calculationHistory');
+            let calculationHistory = [];
+            
+            // Funkcja dodająca wpis do historii
+            function addToHistory(calculation) {
+                calculationHistory.unshift(calculation);
+                if (calculationHistory.length > 5) {
+                    calculationHistory.pop();
+                }
+                
+                updateHistoryDisplay();
+            }
+            
+            // Funkcja aktualizująca wyświetlaną historię
+            function updateHistoryDisplay() {
+                historyContainer.innerHTML = '';
+                
+                if (calculationHistory.length === 0) {
+                    historyContainer.innerHTML = '<div class="history-item">Brak historii obliczeń</div>';
+                    return;
+                }
+                
+                calculationHistory.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.textContent = item;
+                    historyContainer.appendChild(historyItem);
+                });
+            }
+            
             // Funkcja przeliczająca bloki na stacki
             function calculateStacks() {
                 const blocks = parseInt(blocksInput.value);
                 const stackSize = parseInt(stackSizeSelect.value);
                 
                 if (isNaN(blocks) || blocks < 0) {
-                    stackResult.innerHTML = '<span style="color: #ff6b6b;">Wprowadź poprawną liczbę bloków</span>';
+                    stackResult.innerHTML = '<span style="color: var(--error);">Wprowadź poprawną liczbę bloków</span>';
                     return;
                 }
                 
                 const fullStacks = Math.floor(blocks / stackSize);
-                const remainder = blocks % stackSize;
+                const remainderValue = blocks % stackSize;
                 
-                if (fullStacks === 0 && remainder === 0) {
-                    stackResult.textContent = '0 stacków';
+                let resultText = '';
+                if (fullStacks === 0 && remainderValue === 0) {
+                    resultText = '0 stacków';
                 } else if (fullStacks === 0) {
-                    stackResult.textContent = `${remainder} bloków (mniej niż 1 stack)`;
-                } else if (remainder === 0) {
-                    stackResult.textContent = `${fullStacks} pełnych stacków`;
+                    resultText = `${remainderValue} bloków (mniej niż 1 stack)`;
+                } else if (remainderValue === 0) {
+                    resultText = `${fullStacks} pełnych stacków`;
                 } else {
-                    stackResult.textContent = `${fullStacks} stacków i ${remainder} bloków`;
+                    resultText = `${fullStacks} stacków i ${remainderValue} bloków`;
                 }
+                
+                stackResult.textContent = resultText;
+                
+                // Porównanie z innymi rozmiarami stacków
+                const stacks64 = Math.floor(blocks / 64);
+                const remainder64 = blocks % 64;
+                compare64.textContent = `${stacks64} stacków, ${remainder64} reszty`;
+                
+                const stacks16 = Math.floor(blocks / 16);
+                const remainder16 = blocks % 16;
+                compare16.textContent = `${stacks16} stacków, ${remainder16} reszty`;
+                
+                remainder.textContent = `${remainderValue} bloków`;
+                
+                // Dodaj do historii
+                addToHistory(`${blocks} bloków = ${resultText} (stack ${stackSize})`);
             }
             
             // Funkcja przeliczająca stacki na bloki
@@ -233,30 +495,123 @@
                 const stackSize = parseInt(stackSizeReverseSelect.value);
                 
                 if (isNaN(stacks) || stacks < 0) {
-                    blockResult.innerHTML = '<span style="color: #ff6b6b;">Wprowadź poprawną liczbę stacków</span>';
+                    blockResult.innerHTML = '<span style="color: var(--error);">Wprowadź poprawną liczbę stacków</span>';
                     return;
                 }
                 
                 const totalBlocks = Math.floor(stacks * stackSize);
                 blockResult.textContent = `${totalBlocks} bloków`;
+                
+                // Dodaj do historii
+                addToHistory(`${stacks} stacków (${stackSize}) = ${totalBlocks} bloków`);
+            }
+            
+            // Kalkulator skrzyń
+            const chestItemsInput = document.getElementById('chestItems');
+            const chestTypeSelect = document.getElementById('chestType');
+            const calculateChestsBtn = document.getElementById('calculateChests');
+            const chestResult = document.getElementById('chestResult');
+            
+            function calculateChests() {
+                const items = parseInt(chestItemsInput.value);
+                const chestSlots = parseInt(chestTypeSelect.value);
+                
+                if (isNaN(items) || items < 0) {
+                    chestResult.innerHTML = '<span style="color: var(--error);">Wprowadź poprawną liczbę przedmiotów</span>';
+                    return;
+                }
+                
+                const stacksPerChest = chestSlots * 64;
+                const fullChests = Math.floor(items / stacksPerChest);
+                const remainderItems = items % stacksPerChest;
+                
+                let resultText = '';
+                if (fullChests === 0 && remainderItems === 0) {
+                    resultText = '0 skrzyń';
+                } else if (fullChests === 0) {
+                    const stacks = Math.floor(remainderItems / 64);
+                    const remainderStacks = remainderItems % 64;
+                    resultText = `Mniej niż 1 skrzynia: ${stacks} stacków i ${remainderStacks} przedmiotów`;
+                } else if (remainderItems === 0) {
+                    resultText = `${fullChests} pełnych skrzyń`;
+                } else {
+                    const stacks = Math.floor(remainderItems / 64);
+                    const remainderStacks = remainderItems % 64;
+                    resultText = `${fullChests} skrzyń i ${stacks} stacków i ${remainderStacks} przedmiotów`;
+                }
+                
+                chestResult.textContent = resultText;
+            }
+            
+            // Kalkulator surowców
+            const craftItemSelect = document.getElementById('craftItem');
+            const craftAmountInput = document.getElementById('craftAmount');
+            const calculateMaterialsBtn = document.getElementById('calculateMaterials');
+            const materialResult = document.getElementById('materialResult');
+            
+            function calculateMaterials() {
+                const item = craftItemSelect.value;
+                const amount = parseInt(craftAmountInput.value);
+                
+                if (isNaN(amount) || amount < 1) {
+                    materialResult.innerHTML = '<span style="color: var(--error);">Wprowadź poprawną ilość</span>';
+                    return;
+                }
+                
+                let materialsNeeded = 0;
+                let itemName = '';
+                
+                switch(item) {
+                    case 'block':
+                        materialsNeeded = Math.ceil(amount / 9);
+                        itemName = 'bloków materiału';
+                        break;
+                    case 'stairs':
+                        materialsNeeded = Math.ceil(amount / 4);
+                        itemName = 'schodów';
+                        break;
+                    case 'slab':
+                        materialsNeeded = Math.ceil(amount / 6);
+                        itemName = 'płyt';
+                        break;
+                    case 'door':
+                        materialsNeeded = Math.ceil(amount / 3);
+                        itemName = 'drzwi';
+                        break;
+                    case 'chest':
+                        materialsNeeded = Math.ceil(amount / 8) * 8;
+                        itemName = 'skrzyń';
+                        break;
+                }
+                
+                materialResult.textContent = `Do wytworzenia ${amount} ${itemName} potrzebujesz: ${materialsNeeded} surowców`;
             }
             
             // Nasłuchiwanie zdarzeń
             calculateStacksBtn.addEventListener('click', calculateStacks);
             calculateBlocksBtn.addEventListener('click', calculateBlocks);
+            calculateChestsBtn.addEventListener('click', calculateChests);
+            calculateMaterialsBtn.addEventListener('click', calculateMaterials);
             
             // Możliwość użycia klawisza Enter
             blocksInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    calculateStacks();
-                }
+                if (e.key === 'Enter') calculateStacks();
             });
             
             stacksInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    calculateBlocks();
-                }
+                if (e.key === 'Enter') calculateBlocks();
             });
+            
+            chestItemsInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') calculateChests();
+            });
+            
+            craftAmountInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') calculateMaterials();
+            });
+            
+            // Inicjalizacja historii
+            updateHistoryDisplay();
         });
     </script>
 </body>
